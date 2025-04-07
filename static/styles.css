@@ -1,0 +1,68 @@
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-weight: bold;
+    color: #1e2a38;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 15px 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Log Entry Styles */
+.log-entry {
+    background-color: #ffffff;
+    border-left: 5px solid #dc3545;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #333;
+    border-radius: 5px;
+}
+
+/* Suppress Form */
+#suppressForm {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#suppressIp {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    #suppressForm {
+        flex-direction: column;
+    }
+}
