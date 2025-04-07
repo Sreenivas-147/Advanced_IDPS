@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IDPS Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f8;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .log-entry {
+            font-family: monospace;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">🛡️ Intrusion Detection & Prevention System</h1>
+
+        <div class="card">
+            <div class="card-header bg-danger text-white">Attack Logs</div>
+            <div class="card-body" id="logs">
+                <p>Loading logs...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-dark text-white">Blocked IPs</div>
+            <div class="card-body" id="blockedIps">
+                <p>Loading blocked IPs...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-warning text-dark">Suppress False Positive</div>
+            <div class="card-body">
+                <form id="suppressForm" class="d-flex gap-2">
+                    <input type="text" class="form-control" id="suppressIp" placeholder="Enter IP to suppress">
+                    <button type="submit" class="btn btn-warning">Suppress</button>
+                </form>
+                <p id="suppressMsg" class="mt-2 text-success"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchLogs() {
+            const res = await fetch('/logs');
+            const logs = await res.json();
+            const container = document.getElementById('logs');
+            container.innerHTML = logs.length
+                ? logs.map(log => `<div class="log-entry">${log}</div>`).join('')
+                : '<p>No logs available</p>';
+        }
+
+        async function fetchBlockedIps() {
+            const res = await fetch('/blocked_ips');
+            const ips = await res.json();
+            const container = document.getElementById('blockedIps');
+            container.innerHTML = Object.keys(ips).length
+                ? Object.keys(ips).map(ip => `<div class="log-entry">${ip}</div>`).join('')
+                : '<p>No blocked IPs</p>';
+        }
+
+        document.getElementById('suppressForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const ip = document.getElementById('suppressIp').value;
+            const res = await fetch(`/suppress/${ip}`);
+            const msg = await res.json();
+            document.getElementById('suppressMsg').textContent = msg.message;
+            document.getElementById('suppressIp').value = '';
+        });
+
+        fetchLogs();
+        fetchBlockedIps();
+        setInterval(fetchLogs, 5000);
+        setInterval(fetchBlockedIps, 10000);
+    </script>
+</body>
+</html>
